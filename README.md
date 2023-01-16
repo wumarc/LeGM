@@ -5,7 +5,7 @@ powerful influence on any franchise he joins. The name “LeGM” can be broken 
 
 The app's name, LeGM, reflects its purpose of providing meaningful insights from raw data on players and teams to help users make informed decisions about a player's value on a particular team. The app, LeGM, enables users to research and compare any active players and gives them the flexibility to customize the list of attributes they wish to compare.
 
-# Getting Started with Create React App
+# Getting Started with LeGM
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

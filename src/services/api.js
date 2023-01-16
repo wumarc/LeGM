@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 export const getAllPlayers = async (input) => {
     return axios.get('https://balldontlie.io/api/v1/players')
     .then(response => response.data)
