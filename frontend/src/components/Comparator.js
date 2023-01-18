@@ -1,4 +1,3 @@
-import { getAllPlayers } from '../services/api.js';
 import { useState } from 'react';
 
 function Comparator() {
@@ -6,14 +5,18 @@ function Comparator() {
   const [players, setPlayers] = useState([]);
 
   const getPlayers = () => {
-    console.log(getAllPlayers());
+    fetch(process.env.REACT_APP_SERVER_URL + 'search')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.data);
+    })
   }
   
   return (
       <div>
         <button onClick={getPlayers}>Show all the players</button>
         <div>
-          
+          {players}
         </div>
       </div>
     );
