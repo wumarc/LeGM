@@ -1,18 +1,12 @@
 
 
-function Player() {
+
+function Player({player_data: {first_name, last_name, position, height_feet, height_inches, weight_pounds, team}}) {
     return (
-        <InputGroup className="mb-3">
-            <Form.Control
-            placeholder="Search for a player"
-            aria-label="Search for a player"
-            aria-describedby="basic-addon2"
-            />
-            <Button variant="outline-secondary" id="button-addon2">
-            Search
-            </Button>
-      </InputGroup>
+      <div>
+        <p>{first_name} {last_name} {position} {height_feet} {height_inches} {weight_pounds}</p>
+      </div>
     );
-  }
+}
   
 export default Player;

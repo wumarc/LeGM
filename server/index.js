@@ -7,7 +7,7 @@ const app = express();
 app.use(cors({origin: '*'}));
 
 app.get("/search", (req, res) => {
-    request('https://balldontlie.io/api/v1/players?search=lebron' + req.query.name, (error, response, body) => {
+    request('https://balldontlie.io/api/v1/players?search=' + req.query.name, (error, response, body) => {
         if (error) {
             console.log(error);
         }
