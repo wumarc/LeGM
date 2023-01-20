@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Container, Col, Row } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Comparator from './Comparator';
 
 function Results() {
@@ -11,9 +11,10 @@ function Results() {
   const [playerName, setPlayerName] = useState('');
 
   const getPlayers = async () => {
-    await fetch(process.env.REACT_APP_SERVER_URL + 'search' + '?name=' + playerName)
+    await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + playerName)
     .then(response => response.json())
-    .then(data => {setPlayers(data.data)}) // pass the data to Comparator after this
+    .then(data => {setPlayers(data.data)}) 
+    // Pass the selected player to Comparator after this line
     .catch(error => console.log(error));
   }
   
