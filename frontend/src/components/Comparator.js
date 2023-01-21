@@ -1,10 +1,11 @@
 import Player from './Player';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Card } from 'react-bootstrap';
 
 function Comparator(props) {
 
+  const [players, setPlayers] = useState([]);
   const [stats, setStats] = useState([]);
 
   const getStats = async (player_id) => {
@@ -15,6 +16,10 @@ function Comparator(props) {
     })
     .catch(error => console.log(error));
   }
+
+  // useEffect(() => {
+  //   // getStats(player.id)
+  // }), [];
 
   return (
       <Card>
@@ -28,5 +33,5 @@ function Comparator(props) {
   );
 
 }
-  
+
 export default Comparator;

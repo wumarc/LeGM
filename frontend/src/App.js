@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <NavigationBar/>
-      <div className='col-md-7 mx-auto'>
+      <div className='col-md-7 mx-auto mt-5'>
           <Results/>
       </div>
     </div>

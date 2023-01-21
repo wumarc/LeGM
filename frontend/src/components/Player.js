@@ -1,16 +1,14 @@
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-function Player({player_data: {first_name, last_name, position, team}, player_stats: {pts, ast, reb, stl, blk, fg_pct, ft_pct}}) {
+function Player({player_data: {first_name, last_name, position, team}, player_stats: {pts, ast, reb, stl, blk}}) {
   
   const data = [
     {name: 'Points', number: pts},
     {name: 'Assists', number: ast},
     {name: 'Rebounds', number: reb},
     {name: 'Steals', number: stl},
-    {name: 'Blocks', number: blk},
-    {name: 'Field Goal %', number: fg_pct},
-    {name: 'Free Throw %', number: ft_pct}
+    {name: 'Blocks', number: blk}
   ];
 
   return (
@@ -25,7 +23,7 @@ function Player({player_data: {first_name, last_name, position, team}, player_st
               <XAxis dataKey="name"/>
               <YAxis/>
               <Tooltip/>
-              <Bar dataKey="number" fill="#00BFFF	" />
+              <Bar dataKey="number" fill="#2D6EFD" />
             </BarChart>
           </ResponsiveContainer>
         </div>
