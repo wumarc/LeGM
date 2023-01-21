@@ -1,6 +1,7 @@
 import Player from './Player';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 function Comparator(props) {
 
@@ -16,14 +17,14 @@ function Comparator(props) {
   }
 
   return (
-      <div>
+      <Card>
         {props.playersList.map((player, i) => (
           <div key={i}>
             <Player player_data={player} player_stats={stats}/>
             <Button onClick={() => getStats(player.id)}>Stats</Button>
           </div>
         ))}
-      </div>
+      </Card>
   );
 
 }
