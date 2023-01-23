@@ -43,15 +43,14 @@ function Search() {
     { name: 'Bradley Beal'},
     { name: 'Malik Beasley'},
     { name: 'MarJon Beauchamp'},
-    { name: 'D?vis Bert?ns'},
     { name: 'Patrick Beverley'},
     { name: 'Saddiq Bey'},
     { name: 'Khem Birch'},
     { name: 'Goga Bitadze'},
     { name: 'Bismack Biyombo'},
     { name: 'Buddy Boeheim'},
-    { name: 'Bogdan Bogdanovi?'},
-    { name: 'Bojan Bogdanovi?'},
+    { name: 'Bogdan Bogdanovic'},
+    { name: 'Bojan Bogdanovic'},
     { name: 'Bol Bol'},
     { name: 'Leandro Bolmaro'},
     { name: 'Devin Booker'},
@@ -80,7 +79,6 @@ function Search() {
     { name: 'Jamal Cain'},
     { name: 'Kentavious Caldwell-Pope'},
     { name: 'Facundo Campazzo'},
-    { name: 'Vlatko ?an?ar'},
     { name: 'Clint Capela'},
     { name: 'Vernon Carey Jr.'},
     { name: 'Jevon Carter'},
@@ -120,13 +118,13 @@ function Search() {
     { name: 'Ousmane Dieng'},
     { name: 'Spencer Dinwiddie'},
     { name: 'Donte DiVincenzo'},
-    { name: 'Luka Don?i?'},
+    { name: 'Luka Doncic'},
     { name: 'Tyler Dorsey'},
     { name: 'Luguentz Dort'},
     { name: 'Ayo Dosunmu'},
     { name: 'Devon Dotson'},
     { name: 'Jeff Dowtin'},
-    { name: 'Goran Dragi?'},
+    { name: 'Goran Dragic'},
     { name: 'Andre Drummond'},
     { name: 'Chris Duarte'},
     { name: 'David Duke Jr.'},
@@ -223,7 +221,7 @@ function Search() {
     { name: 'LeBron James'},
     { name: 'Ty Jerome'},
     { name: 'Isaiah Joe'},
-    { name: 'Nikola Joki?'},
+    { name: 'Nikola Jokic'},
     { name: 'Damian Jones'},
     { name: 'Derrick Jones Jr.'},
     { name: 'Herbert Jones'},
@@ -274,7 +272,7 @@ function Search() {
     { name: 'Sandro Mamukelashvili'},
     { name: 'Terance Mann'},
     { name: 'Tre Mann'},
-    { name: 'Boban Marjanovi?'},
+    { name: 'Boban Marjanovic'},
     { name: 'Lauri Markkanen'},
     { name: 'Naji Marshall'},
     { name: 'Caleb Martin'},
@@ -329,7 +327,7 @@ function Search() {
     { name: 'Jaylen Nowell'},
     { name: 'Frank Ntilikina'},
     { name: 'Kendrick Nunn'},
-    { name: 'Jusuf Nurki?'},
+    { name: 'Jusuf Nurkic'},
     { name: 'Jordan Nwora'},
     { name: 'Chuma Okeke'},
     { name: 'Josh Okogie'},
@@ -353,7 +351,6 @@ function Search() {
     { name: 'Michael Porter Jr.'},
     { name: 'Otto Porter Jr.'},
     { name: 'Bobby Portis'},
-    { name: 'Kristaps Porzi??is'},
     { name: 'Micah Potter'},
     { name: 'Dwight Powell'},
     { name: 'Norman Powell'},
@@ -377,7 +374,6 @@ function Search() {
     { name: 'DAngelo Russell'},
     { name: 'Matt Ryan'},
     { name: 'Domantas Sabonis'},
-    { name: 'Dario Šari?'},
     { name: 'Jordan Schakel'},
     { name: 'Admiral Schofield'},
     { name: 'Dennis Schröder'},
@@ -420,13 +416,11 @@ function Search() {
     { name: 'Gary Trent Jr.'},
     { name: 'P.J. Tucker'},
     { name: 'Myles Turner'},
-    { name: 'Jonas Valan?i?nas'},
     { name: 'Jarred Vanderbilt'},
     { name: 'Fred VanVleet'},
     { name: 'Devin Vassell'},
     { name: 'Gabe Vincent'},
     { name: 'Noah Vonleh'},
-    { name: 'Nikola Vu?evi?'},
     { name: 'Dean Wade'},
     { name: 'Franz Wagner'},
     { name: 'Moritz Wagner'},
@@ -475,44 +469,43 @@ function Search() {
   const [validInput, setValidInput] = useState(true);
   const [playersDetails, setPlayersDetails] = useState([]);
   const [playersStats, setPlayersStats] = useState([]);
+  const [display, setDisplay] = useState(false);
 
-  const getStats = async () => {  
+  const getStats = async () => {
+    const details = []
+    const stats = []
+
     // Get general player information
     await Promise.all(players.map(async player => {
         try {
-          return await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + player)
+          await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + player)
           .then(response => response.json())
-          .then(data => {
-            setPlayersDetails([...playersDetails, data.data[0]])
+          .then(data => { 
+            details.push(data.data[0]);
+            try {
+                fetch(process.env.REACT_APP_SERVER_URL + 'get_stats?player_id=' + data.data[0].id)
+                .then(response => response.json())
+                .then(data => { stats.push(data.data[0])})
+            } catch (err) {
+                console.log(err)
+            }
           })
-          .then(console.log(playersDetails))
         } catch (err) {
           console.log(err)
         }
     }));
-    // Get player season stats
-    await Promise.all(playersDetails.map(async player => {
-        try {
-            return await fetch(process.env.REACT_APP_SERVER_URL + 'get_stats?player_id=' + player.id)
-            .then(response => response.json())
-            .then(data => {
-            setPlayersStats([...playersStats, data.data[0]])
-            })
-        } catch (err) {
-            console.log(err)
-        }
-    }));
+    setPlayersDetails(details)
+    setPlayersStats(stats)
+
+    // Display the chart
+    setDisplay(true);
   }
 
-  const handleChange = (e, value) => {
-    setPlayers(value);
-  };
+  const handleChange = (e, value) => { setPlayers(value); };
 
   useEffect(() => {
-    if (currentInput.length === 0) {
-      setValidInput(true);
-    }
-  }, [currentInput]);
+    if (currentInput.length === 0) { setValidInput(true);}
+  }, [currentInput, players, playersDetails, playersStats]);
 
   return (
     <div>
@@ -528,14 +521,16 @@ function Search() {
                     renderInput={(params) => ( <TextField {...params} variant="outlined" error={!validInput} placeholder="Enter a player's name" />)}
                 />
             </div>
-            <div className="d-grid gap-2">
-                <button className="btn btn-primary" type="button" onClick={getStats}>Compare</button>
+            <div className="d-grid gap-2 mt-2">
+                <button className="btn btn-primary" type="button" onClick={getStats}>Compare the players</button>
             </div>
         </div>
         {/* Results */}
-        <div>
-            <Chart/>
-        </div>
+        { display ? (
+            <div className="mt-5"><Chart players={playersDetails} stats={playersStats}/></div>
+        ) : (
+            <div>Select a list of players</div>)
+        }
     </div>
   );
 
