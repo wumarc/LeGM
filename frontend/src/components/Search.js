@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Chart from "./Chart";
 
 function Search() {
 
@@ -472,28 +473,35 @@ function Search() {
   const [players, setPlayers] = useState([]);
   const [currentInput, setCurrentInput] = useState("");
   const [validInput, setValidInput] = useState(true);
+  const [playersDetails, setPlayersDetails] = useState([]);
+  const [playersStats, setPlayersStats] = useState([]);
 
-  const getPlayerStats = async () => {
-    console.log("Getting data... bibibip")
+  const getStats = async () => {  
     // Get general player information
-//     await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + searchedPlayer.name)
-//     .then(response => response.json())
-//     .then(data => {
-//       setSearchedPlayer({...searchedPlayer, player_id: data.data[0].id})
-//       setPlayers([...players, data.data[0]])
-//       console.log(searchedPlayer)
-//     })
-//     .catch(error => console.log(error));
-
-//     // Get player season stats
-//     console.log(searchedPlayer)
-//     await fetch(process.env.REACT_APP_SERVER_URL + 'get_stats?player_id=' + searchedPlayer.player_id)
-//     .then(response => response.json())
-//     .then(data => {
-//       setPlayersStats([...playersStats, data.data[0]])
-//     })
-//     .catch(error => console.log(error));
-
+    await Promise.all(players.map(async player => {
+        try {
+          return await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + player)
+          .then(response => response.json())
+          .then(data => {
+            setPlayersDetails([...playersDetails, data.data[0]])
+          })
+          .then(console.log(playersDetails))
+        } catch (err) {
+          console.log(err)
+        }
+    }));
+    // Get player season stats
+    await Promise.all(playersDetails.map(async player => {
+        try {
+            return await fetch(process.env.REACT_APP_SERVER_URL + 'get_stats?player_id=' + player.id)
+            .then(response => response.json())
+            .then(data => {
+            setPlayersStats([...playersStats, data.data[0]])
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    }));
   }
 
   const handleChange = (e, value) => {
@@ -503,9 +511,6 @@ function Search() {
   useEffect(() => {
     if (currentInput.length === 0) {
       setValidInput(true);
-    } else {
-      const re = /^/;
-      setValidInput(re.test(currentInput));
     }
   }, [currentInput]);
 
@@ -514,21 +519,23 @@ function Search() {
         {/* Search bar */}
         <div>
             <div className="Autocomplete">
-            <Autocomplete freeSolo multiple autoSelect
-                options={active_players.map((option) => option.name)}
-                value={players}
-                onChange={handleChange}
-                inputValue={currentInput}
-                onInputChange={(e, v) => setCurrentInput(v)}
-                renderInput={(params) => ( <TextField {...params} variant="outlined" error={!validInput} placeholder="Enter a player's name" />)}
-            />
+                <Autocomplete freeSolo multiple autoSelect
+                    options={active_players.map((option) => option.name)}
+                    value={players}
+                    onChange={handleChange}
+                    inputValue={currentInput}
+                    onInputChange={(e, v) => setCurrentInput(v)}
+                    renderInput={(params) => ( <TextField {...params} variant="outlined" error={!validInput} placeholder="Enter a player's name" />)}
+                />
             </div>
-            <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="button" onClick={getPlayerStats}>Compare</button>
+            <div className="d-grid gap-2">
+                <button className="btn btn-primary" type="button" onClick={getStats}>Compare</button>
             </div>
         </div>
         {/* Results */}
-        
+        <div>
+            <Chart/>
+        </div>
     </div>
   );
 
