@@ -483,7 +483,7 @@ function Results() {
   ]
   const [playerName, setPlayerName] = useState('');
   const [player, setPlayer] = useState([]);
-
+  
   const getPlayer = async () => {
     await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + playerName)
     .then(response => response.json())

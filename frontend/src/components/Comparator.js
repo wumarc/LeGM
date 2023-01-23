@@ -17,10 +17,6 @@ function Comparator(props) {
     .catch(error => console.log(error));
   }
 
-  // useEffect(() => {
-  //   // getStats(player.id)
-  // }), [];
-
   return (
       <Card>
         {props.playersList.map((player, i) => (
