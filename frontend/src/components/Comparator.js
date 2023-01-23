@@ -1,5 +1,5 @@
 import Player from './Player';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Card } from 'react-bootstrap';
 

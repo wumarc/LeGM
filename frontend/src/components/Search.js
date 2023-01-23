@@ -1,11 +1,9 @@
-import * as React from 'react';
-import {useState} from 'react';
+import React, { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Row, Container} from 'react-bootstrap';
 
-function Results() {
-  
+function Search() {
+
   const active_players = [
     { name: 'Precious Achiuwa'},
     { name: 'Steven Adams'},
@@ -224,13 +222,6 @@ function Results() {
     { name: 'LeBron James'},
     { name: 'Ty Jerome'},
     { name: 'Isaiah Joe'},
-    { name: 'Alize Johnson'},
-    { name: 'Cameron Johnson'},
-    { name: 'Jalen Johnson'},
-    { name: 'James Johnson'},
-    { name: 'Keldon Johnson'},
-    { name: 'Keon Johnson'},
-    { name: 'Stanley Johnson'},
     { name: 'Nikola Joki?'},
     { name: 'Damian Jones'},
     { name: 'Derrick Jones Jr.'},
@@ -239,8 +230,6 @@ function Results() {
     { name: 'Tre Jones'},
     { name: 'Tyus Jones'},
     { name: 'DeAndre Jordan'},
-    { name: 'Cory Joseph'},
-    { name: 'Nikola Jovi?'},
     { name: 'Mfiondu Kabengele'},
     { name: 'Frank Kaminsky'},
     { name: 'Trevor Keels'},
@@ -480,54 +469,69 @@ function Results() {
     { name: 'Trae Young'},
     { name: 'Ivica Zubac'}
   ]
-  const [searchedPlayer, setSearchedPlayer] = useState({
-    name: "",
-    player_id: 0
-  });
   const [players, setPlayers] = useState([]);
-  const [playersStats, setPlayersStats] = useState([]);
+  const [currentInput, setCurrentInput] = useState("");
+  const [validInput, setValidInput] = useState(true);
 
   const getPlayerStats = async () => {
-    
+    console.log("Getting data... bibibip")
     // Get general player information
-    await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + searchedPlayer.name)
-    .then(response => response.json())
-    .then(data => {
-      setSearchedPlayer({...searchedPlayer, player_id: data.data[0].id})
-      setPlayers([...players, data.data[0]])
-      console.log(searchedPlayer)
-    })
-    .catch(error => console.log(error));
+//     await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + searchedPlayer.name)
+//     .then(response => response.json())
+//     .then(data => {
+//       setSearchedPlayer({...searchedPlayer, player_id: data.data[0].id})
+//       setPlayers([...players, data.data[0]])
+//       console.log(searchedPlayer)
+//     })
+//     .catch(error => console.log(error));
 
-    // Get player season stats
-    console.log(searchedPlayer)
-    await fetch(process.env.REACT_APP_SERVER_URL + 'get_stats?player_id=' + searchedPlayer.player_id)
-    .then(response => response.json())
-    .then(data => {
-      setPlayersStats([...playersStats, data.data[0]])
-    })
-    .catch(error => console.log(error));
+//     // Get player season stats
+//     console.log(searchedPlayer)
+//     await fetch(process.env.REACT_APP_SERVER_URL + 'get_stats?player_id=' + searchedPlayer.player_id)
+//     .then(response => response.json())
+//     .then(data => {
+//       setPlayersStats([...playersStats, data.data[0]])
+//     })
+//     .catch(error => console.log(error));
 
   }
 
-  
-  
+  const handleChange = (e, value) => {
+    setPlayers(value);
+  };
+
+  useEffect(() => {
+    if (currentInput.length === 0) {
+      setValidInput(true);
+    } else {
+      const re = /^/;
+      setValidInput(re.test(currentInput));
+    }
+  }, [currentInput]);
+
   return (
-    <Container>
-      <Row>
-        <Autocomplete
-          options={active_players.map((player) => player.name)}
-          renderInput={(params) => <TextField {...params} label="Search for a player by name" />}
-          onChange={(event, value) => setSearchedPlayer({...searchedPlayer, name: value})}
-          onKeyPress={(e) => { if (e.key === 'Enter') { getPlayerStats()}}}
-        />
-      </Row>
-      <Row>
+    <div>
+        {/* Search bar */}
+        <div>
+            <div className="Autocomplete">
+            <Autocomplete freeSolo multiple autoSelect
+                options={active_players.map((option) => option.name)}
+                value={players}
+                onChange={handleChange}
+                inputValue={currentInput}
+                onInputChange={(e, v) => setCurrentInput(v)}
+                renderInput={(params) => ( <TextField {...params} variant="outlined" error={!validInput} placeholder="Enter a player's name" />)}
+            />
+            </div>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="button" onClick={getPlayerStats}>Compare</button>
+            </div>
+        </div>
+        {/* Results */}
         
-      </Row>
-    </Container>
+    </div>
   );
 
-}
+};
 
-export default Results;
+export default Search;
