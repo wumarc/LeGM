@@ -468,51 +468,38 @@ function Search() {
   const [currentInput, setCurrentInput] = useState("");
   const [validInput, setValidInput] = useState(true);
   const [playersDetails, setPlayersDetails] = useState([]);
-  const [playersStats, setPlayersStats] = useState([]);
   const [display, setDisplay] = useState(false);
 
   const getStats = async () => {
     const details = []
-    const stats = []
-
     // Get general player information
     await Promise.all(players.map(async player => {
         try {
           await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + player)
           .then(response => response.json())
-          .then(data => { 
-            details.push(data.data[0]);
-            try {
-                fetch(process.env.REACT_APP_SERVER_URL + 'get_stats?player_id=' + data.data[0].id)
-                .then(response => response.json())
-                .then(data => { stats.push(data.data[0])})
-            } catch (err) {
-                console.log(err)
-            }
-          })
+          .then(data => details.push(data.data[0]))
         } catch (err) {
           console.log(err)
         }
     }));
     setPlayersDetails(details)
-    setPlayersStats(stats)
-
-    // Display the chart
     setDisplay(true);
+    setPlayers([]);
+    setCurrentInput("");
   }
 
   const handleChange = (e, value) => { setPlayers(value); };
 
   useEffect(() => {
     if (currentInput.length === 0) { setValidInput(true);}
-  }, [currentInput, players, playersDetails, playersStats]);
+  }, [currentInput, players, playersDetails]);
 
   return (
     <div>
         {/* Search bar */}
         <div>
             <div className="Autocomplete">
-                <Autocomplete freeSolo multiple autoSelect
+                <Autocomplete multiple autoSelect
                     options={active_players.map((option) => option.name)}
                     value={players}
                     onChange={handleChange}
@@ -522,14 +509,19 @@ function Search() {
                 />
             </div>
             <div className="d-grid gap-2 mt-2">
-                <button className="btn btn-primary" type="button" onClick={getStats}>Compare the players</button>
+                <button 
+                  className="btn btn-primary" 
+                  type="button" 
+                  onClick={getStats}
+                >
+                  Compare the players
+                </button>
             </div>
         </div>
         {/* Results */}
         { display ? (
-            <div className="mt-5"><Chart players={playersDetails} stats={playersStats}/></div>
-        ) : (
-            <div>Select a list of players</div>)
+            <div className="mt-5"><Chart players={playersDetails}/></div>
+        ) : null
         }
     </div>
   );
