@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
+// Estimated % of source code written by me in this component: 50%
 function Chart({players}) {
   
   // Colours used for the chart

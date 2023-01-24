@@ -1,3 +1,5 @@
+// Estimated % of source code written by me in this component: 90%
+
 const express = require("express");
 const request = require("request");
 const cors = require('cors');

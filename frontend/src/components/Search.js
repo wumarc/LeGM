@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chart from "./Chart";
 
+// Estimated % of source code written by me in this component: 70%
 function Search() {
 
   const active_players = [
