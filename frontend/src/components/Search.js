@@ -484,8 +484,6 @@ function Search() {
     setPlayersDetails(details)
   }
 
-  
-
   const handleChange = (e, value) => { setPlayers(value); };
 
   useEffect(() => {
@@ -517,7 +515,7 @@ function Search() {
             </div>
         </div>
         {/* Results */}
-        <div className="mt-5"><Chart players={playersDetails} /></div>
+        <div className="mt-5"><Chart players={playersDetails}/></div>
     </div>
   );
 
