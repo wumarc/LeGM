@@ -3,7 +3,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 function Chart({players}) {
   
+  // Colours used for the chart
   const colours = ['#e60049', '#0bb4ff', '#50e991', '#e6d800', '#9b19f5', '#ffa300', '#dc0ab4', '#b3d4ff', '#00bfa0']
+  // Chart data
   const chart_data = [
     {name: 'Points'},
     {name: 'Assists'},
@@ -13,12 +15,15 @@ function Chart({players}) {
   ];
 
   useEffect(() => {
+    
+    // Fetch stats for each player and add the stats to the chat_data
     Promise.all(players.map(async player => {
       try {
-        await fetch(process.env.REACT_APP_SERVER_URL + 'get_stats?player_id=' + player.id)
+        await fetch('http://localhost:3001/get_stats?player_id=' + player.id)
         .then(response => response.json())
         .then(data => {
           const player_name = player.first_name + ' ' + player.last_name;
+          // Add new attributes for each stat category based on player's name to chart_data
           chart_data[0][player_name] = data.data[0].pts;
           chart_data[1][player_name] = data.data[0].ast;
           chart_data[2][player_name] = data.data[0].reb;
@@ -29,10 +34,13 @@ function Chart({players}) {
         console.log(err)
       }
     }));
+    // eslint-disable-next-line
   }, [players])
 
   return (
+
     <ResponsiveContainer width="85%" aspect={1.7}>
+      {/* Chart code source: https://recharts.org/en-US/examples/SimpleBarChart */}
       <BarChart 
         width={600} 
         height={300} 
@@ -46,10 +54,13 @@ function Chart({players}) {
         <Legend/>
         {players.map((player, id) => {
           const name = player.first_name + ' ' + player.last_name;
-          return ( <Bar key={id} dataKey={name} fill={colours[id]} />)
+          return ( 
+            <Bar key={id} dataKey={name} fill={colours[id]} />
+          )
         })}
       </BarChart>
     </ResponsiveContainer>
+
   );
   
 }

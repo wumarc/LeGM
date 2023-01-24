@@ -463,25 +463,31 @@ function Search() {
     { name: 'Thaddeus Young'},
     { name: 'Trae Young'},
     { name: 'Ivica Zubac'}
-  ]
-  const [players, setPlayers] = useState([]);
-  const [currentInput, setCurrentInput] = useState("");
-  const [validInput, setValidInput] = useState(true);
-  const [playersDetails, setPlayersDetails] = useState([]);
+  ] // The list of all the players for the search bar
+  const [players, setPlayers] = useState([]); // The players that the user selected
+  const [currentInput, setCurrentInput] = useState(""); // The current input of the user
+  const [validInput, setValidInput] = useState(true); // Check to see if the input is valid
+  const [playersDetails, setPlayersDetails] = useState([]); // The details of the players that were returned by the API
 
-  const getStats = async () => {
+  // Get the details of the players that were selected by the user
+  const getDetails = async () => {
+    
     const details = []
-    // Get general player information
+    
+    // Make the API call to get the details of each player using the list of players' name given by the user
     await Promise.all(players.map(async player => {
         try {
-          await fetch(process.env.REACT_APP_SERVER_URL + 'search?name=' + player)
+          await fetch('http://localhost:3001/search?name=' + player)
           .then(response => response.json())
           .then(data => details.push(data.data[0]))
         } catch (err) {
           console.log(err)
         }
     }));
+
+    // Set the details of the players to the state
     setPlayersDetails(details)
+    
   }
 
   const handleChange = (e, value) => { setPlayers(value); };
@@ -492,7 +498,7 @@ function Search() {
 
   return (
     <div>
-        {/* Search bar */}
+        {/* Search bar code source: https://codesandbox.io/s/multiple-value-input-77cs4?file=/src/components/MyAutocomplete.js*/}
         <div>
             <div className="Autocomplete">
                 <Autocomplete multiple autoSelect
@@ -508,7 +514,7 @@ function Search() {
                 <button 
                   className="btn btn-primary" 
                   type="button" 
-                  onClick={getStats}
+                  onClick={getDetails}
                 >
                   Compare the players
                 </button>
