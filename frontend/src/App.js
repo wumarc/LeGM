@@ -9,7 +9,7 @@ function App() {
       <NavigationBar/>
       <div className='col-md-7 mx-auto mt-5'>
           <Search/>
-          <h6 class="text-danger">N.B. Due to an ongoing issue, please resize or zoom in or out of the window to see the graph bars once the players have been selected</h6>
+          <h6 className="text-danger">N.B. Due to an ongoing issue, please resize or zoom in or out of the window to see the graph bars once the players have been selected</h6>
       </div>
       <div className='fs-4 mt-5 col-md-7 mx-auto font-weight-bold text-body-secondary mb-1'>
         <h1 className='mt-2 mb-3'>LeGM</h1>
