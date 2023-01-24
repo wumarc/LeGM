@@ -32,23 +32,24 @@ function Chart({players}) {
   }, [players])
 
   return (
-      <div>
-        {/* Display the stats chart here */}
-        <ResponsiveContainer width="99%" aspect={2}>
-          <BarChart width={300} height={400} data={chart_data} margin={{top: 5, left: 30, right: 20, bottom: 5}} >
-            <CartesianGrid strokeDasharray="3 3"/>
-            <XAxis dataKey="name"/>
-            <YAxis/>
-            <Tooltip/>
-            <Legend/>
-            {players.map((player, id) => {
-              const name = player.first_name + ' ' + player.last_name;
-              return ( <Bar key={id} dataKey={name} fill={colours[id]} />)
-              })
-            }
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+    <ResponsiveContainer width="85%" aspect={1.7}>
+      <BarChart 
+        width={600} 
+        height={300} 
+        data={chart_data} 
+        margin={{top: 5, left: 20, right: 20, bottom: 5}}
+      >
+        <CartesianGrid strokeDasharray="3 3"/>
+        <XAxis dataKey="name"/>
+        <YAxis/>
+        <Tooltip/>
+        <Legend/>
+        {players.map((player, id) => {
+          const name = player.first_name + ' ' + player.last_name;
+          return ( <Bar key={id} dataKey={name} fill={colours[id]} />)
+        })}
+      </BarChart>
+    </ResponsiveContainer>
   );
   
 }

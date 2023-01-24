@@ -468,7 +468,6 @@ function Search() {
   const [currentInput, setCurrentInput] = useState("");
   const [validInput, setValidInput] = useState(true);
   const [playersDetails, setPlayersDetails] = useState([]);
-  const [display, setDisplay] = useState(false);
 
   const getStats = async () => {
     const details = []
@@ -483,16 +482,15 @@ function Search() {
         }
     }));
     setPlayersDetails(details)
-    setDisplay(true);
-    setPlayers([]);
-    setCurrentInput("");
   }
+
+  
 
   const handleChange = (e, value) => { setPlayers(value); };
 
   useEffect(() => {
     if (currentInput.length === 0) { setValidInput(true);}
-  }, [currentInput, players, playersDetails]);
+  }, [currentInput]);
 
   return (
     <div>
@@ -519,10 +517,7 @@ function Search() {
             </div>
         </div>
         {/* Results */}
-        { display ? (
-            <div className="mt-5"><Chart players={playersDetails}/></div>
-        ) : null
-        }
+        <div className="mt-5"><Chart players={playersDetails} /></div>
     </div>
   );
 
