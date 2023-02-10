@@ -5,7 +5,7 @@ LeGM is a tool that lets you compare multiple players' statistics in one chart. 
 
 
 
-## Build by:
+## Built by:
 
 Student name: Marc WU
 
